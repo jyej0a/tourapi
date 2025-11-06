@@ -2,6 +2,7 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 
 // Clerk 기본 middleware (세션 관리용)
 // 인증 보호는 각 페이지에서 처리
+// Edge Runtime에서 실행 (기본값)
 export default clerkMiddleware();
 
 export const config = {
@@ -11,7 +12,5 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)",
   ],
-  // Node.js 런타임 사용 (Edge Runtime 제한 우회)
-  runtime: 'nodejs',
 };
 
