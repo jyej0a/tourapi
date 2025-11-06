@@ -19,7 +19,10 @@
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/not-found} - Next.js 404 페이지 문서
  */
 
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Home, Search, MapPin, Bookmark } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,6 +33,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
  * 존재하지 않는 페이지에 접근할 때 표시됩니다.
  */
 export default function NotFound() {
+  const router = useRouter();
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-2xl">
@@ -83,7 +87,7 @@ export default function NotFound() {
               <Button
                 variant="outline"
                 className="w-full h-auto p-4 flex flex-col items-center gap-2"
-                onClick={() => window.history.back()}
+                onClick={() => router.back()}
               >
                 <MapPin className="h-5 w-5" />
                 <span className="font-medium">이전 페이지</span>
