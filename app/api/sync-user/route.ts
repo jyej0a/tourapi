@@ -1,4 +1,4 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { currentUser, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { getServiceRoleClient } from "@/lib/supabase/service-role";
 
@@ -10,16 +10,16 @@ import { getServiceRoleClient } from "@/lib/supabase/service-role";
  */
 export async function POST() {
   try {
-    // Clerk 인증 확인
-    const { userId } = await auth();
+    // Clerk 인증 확인 - currentUser() 사용 (API Route에서 권장 방식)
+    const user = await currentUser();
 
-    if (!userId) {
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Clerk에서 사용자 정보 가져오기
     const client = await clerkClient();
-    const clerkUser = await client.users.getUser(userId);
+    const clerkUser = await client.users.getUser(user.id);
 
     if (!clerkUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
