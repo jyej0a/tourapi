@@ -1,13 +1,19 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-// Clerk middleware (최소 설정)
-// 세션 관리를 위해 필요하지만, 인증 보호는 각 페이지에서 처리
-export default clerkMiddleware();
+// Clerk를 사용하지 않는 최소 middleware
+// 파일은 존재해야 하므로 404 오류 방지
+// 실제 인증은 각 페이지와 API route에서 처리
+export function middleware(request: NextRequest) {
+  // 아무것도 하지 않고 요청을 그대로 통과
+  return NextResponse.next();
+}
 
 export const config = {
-  // 최소한의 경로만 처리하여 Edge Runtime 부하 감소
   matcher: [
-    // API routes만 처리 (페이지는 제외)
+    // Skip Next.js internals and all static files
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 };
