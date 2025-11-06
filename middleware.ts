@@ -1,6 +1,16 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+// 인증이 필요한 경로 정의
+const isProtectedRoute = createRouteMatcher([
+  '/bookmarks(.*)',
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  // 인증이 필요한 경로만 보호
+  if (isProtectedRoute(req)) {
+    await auth.protect();
+  }
+});
 
 export const config = {
   matcher: [

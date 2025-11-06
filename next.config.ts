@@ -37,21 +37,10 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60,
   },
   // Edge Runtime 호환성 설정
-  serverExternalPackages: ['@clerk/nextjs'],
+  serverExternalPackages: ['@clerk/nextjs', '@clerk/backend'],
   // Edge Runtime 호환성을 위한 실험적 설정
   experimental: {
-    serverComponentsExternalPackages: ['@clerk/nextjs'],
-  },
-  // Webpack 설정: Edge Runtime에서 지원되지 않는 모듈 외부화
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Edge Runtime에서 문제가 되는 Clerk 모듈을 외부화
-      config.externals = config.externals || [];
-      config.externals.push({
-        '@clerk/shared/buildAccountsBaseUrl': 'commonjs @clerk/shared/buildAccountsBaseUrl',
-      });
-    }
-    return config;
+    serverComponentsExternalPackages: ['@clerk/nextjs', '@clerk/backend'],
   },
   // 빌드 시 테스트 페이지 제외 (선택사항)
   // 실제로는 각 페이지의 dynamic = 'force-dynamic'으로 처리됨
