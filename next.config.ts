@@ -15,6 +15,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Webpack 설정: Edge Runtime 호환성 개선
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Server-side에서만 externals 적용
+      config.externals = config.externals || {};
+      if (typeof config.externals === 'object' && !Array.isArray(config.externals)) {
+        config.externals = {
+          ...config.externals,
+          '@clerk/shared/buildAccountsBaseUrl': 'commonjs @clerk/shared/buildAccountsBaseUrl',
+        };
+      }
+    }
+    return config;
+  },
   images: {
     // 외부 이미지 도메인 허용
     remotePatterns: [
