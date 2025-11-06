@@ -36,6 +36,10 @@ const nextConfig: NextConfig = {
     // 최소 이미지 최적화 (성능 향상)
     minimumCacheTTL: 60,
   },
+  // Edge Runtime 호환성 설정
+  experimental: {
+    serverComponentsExternalPackages: ['@clerk/nextjs'],
+  },
 };
 
 export default nextConfig;
