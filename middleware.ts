@@ -19,4 +19,6 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)",
   ],
+  // Node.js 런타임 사용 (Edge Runtime 제한 우회)
+  runtime: 'nodejs',
 };
