@@ -25,6 +25,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { BackButton } from '@/components/ui/back-button';
 
+// 동적 렌더링 강제 (빌드 시 prerendering 방지)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const dynamicParams = true;
+
 /**
  * 404 페이지 컴포넌트
  * 

@@ -27,6 +27,11 @@ interface FileObject {
 
 const STORAGE_BUCKET = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "uploads";
 
+// 동적 렌더링 강제 (빌드 시 prerendering 방지)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const runtime = 'nodejs'; // Node.js 런타임 사용 (Edge가 아닌)
+
 export default function StorageTestPage() {
   const { user, isLoaded } = useUser();
   const supabase = useClerkSupabaseClient();

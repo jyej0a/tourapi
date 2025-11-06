@@ -26,6 +26,11 @@ export function useSyncUser() {
   const syncedRef = useRef(false);
 
   useEffect(() => {
+    // 클라이언트 사이드에서만 실행
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     // 이미 동기화했거나, 로딩 중이거나, 로그인하지 않은 경우 무시
     if (syncedRef.current || !isLoaded || !userId) {
       return;

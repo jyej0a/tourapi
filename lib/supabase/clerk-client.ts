@@ -39,7 +39,15 @@ export function useClerkSupabaseClient() {
 
     return createClient(supabaseUrl, supabaseKey, {
       async accessToken() {
-        return (await getToken()) ?? null;
+        // 빌드 시 또는 getToken이 없을 때 처리
+        if (typeof window === 'undefined' || !getToken) {
+          return null;
+        }
+        try {
+          return (await getToken()) ?? null;
+        } catch {
+          return null;
+        }
       },
     });
   }, [getToken]);

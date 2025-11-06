@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   description: "Next.js + Clerk + Supabase 보일러플레이트",
 };
 
+// 동적 렌더링 강제 (빌드 시 prerendering 방지)
+// Clerk Context를 사용하는 클라이언트 컴포넌트가 있으므로 필요
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
