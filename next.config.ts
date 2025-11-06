@@ -36,12 +36,6 @@ const nextConfig: NextConfig = {
     // 최소 이미지 최적화 (성능 향상)
     minimumCacheTTL: 60,
   },
-  // Edge Runtime 호환성 설정
-  serverExternalPackages: ['@clerk/nextjs', '@clerk/backend'],
-  // Edge Runtime 호환성을 위한 실험적 설정
-  experimental: {
-    serverComponentsExternalPackages: ['@clerk/nextjs', '@clerk/backend'],
-  },
   // 빌드 시 테스트 페이지 제외 (선택사항)
   // 실제로는 각 페이지의 dynamic = 'force-dynamic'으로 처리됨
 };
