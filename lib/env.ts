@@ -17,11 +17,21 @@
  */
 
 /**
+ * 환경변수 설정 타입
+ */
+type EnvConfig = {
+  required: boolean;
+  description: string;
+  fallback?: string;
+  default?: string;
+};
+
+/**
  * 환경변수 스키마 정의
  * 
  * 각 환경변수의 타입과 필수 여부를 정의합니다.
  */
-const envSchema = {
+const envSchema: Record<string, EnvConfig> = {
   // 한국관광공사 API
   NEXT_PUBLIC_TOUR_API_KEY: {
     required: true,
@@ -93,7 +103,7 @@ const envSchema = {
     required: false,
     description: '사이트 기본 URL',
   },
-} as const;
+};
 
 /**
  * 환경변수 검증 결과
