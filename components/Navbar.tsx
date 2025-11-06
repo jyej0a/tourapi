@@ -2,14 +2,23 @@ import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
 
 const Navbar = () => {
   return (
     <header className="flex justify-between items-center p-4 gap-4 h-16 max-w-7xl mx-auto">
       <Link href="/" className="text-2xl font-bold">
-        SaaS Template
+        My Trip
       </Link>
       <div className="flex gap-4 items-center">
+        <SignedIn>
+          <Link href="/bookmarks">
+            <Button variant="ghost" className="gap-2">
+              <Star className="h-4 w-4" />
+              북마크
+            </Button>
+          </Link>
+        </SignedIn>
         <SignedOut>
           <SignInButton mode="modal">
             <Button>로그인</Button>
