@@ -28,7 +28,6 @@ import { TourSearch } from '@/components/tour-search';
 import { TourSort } from '@/components/tour-sort';
 import { TourPagination } from '@/components/tour-pagination';
 import { getAreaBasedList, getAreaCodes, searchKeyword } from '@/lib/api/tour-api';
-import { CONTENT_TYPE } from '@/lib/types/tour';
 import type { TourItem } from '@/lib/types/tour';
 
 interface HomeProps {
@@ -84,7 +83,7 @@ function parseModifiedTime(modifiedtime: string): Date | null {
       ) {
         return date;
       }
-    } catch (error) {
+    } catch {
       // 파싱 실패
       return null;
     }
@@ -96,7 +95,7 @@ function parseModifiedTime(modifiedtime: string): Date | null {
     if (!isNaN(date.getTime())) {
       return date;
     }
-  } catch (error) {
+  } catch {
     // 파싱 실패
   }
 
@@ -256,25 +255,25 @@ export default async function Home({ searchParams }: HomeProps) {
   ]);
 
   return (
-    <main className="min-h-[calc(100vh-80px)] px-4 py-8 lg:px-8 lg:py-16">
-      <div className="w-full max-w-7xl mx-auto">
+    <main className="min-h-[calc(100vh-80px)] py-12 lg:py-20">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
         {/* 페이지 헤더 */}
-        <div className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-2">
+        <div className="mb-12">
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 tracking-tight">
             전국 관광지 정보
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             한국관광공사 공공 API를 활용한 관광지 정보 서비스
           </p>
         </div>
 
         {/* 검색창 */}
-        <div className="mb-6">
+        <div className="mb-8">
           <TourSearch />
         </div>
 
         {/* 필터 및 정렬 */}
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <TourFilters areaCodes={areaCodes} />
           <TourSort />
         </div>
@@ -283,7 +282,7 @@ export default async function Home({ searchParams }: HomeProps) {
         {keyword && (
           <div className="mb-4">
             <p className="text-sm text-muted-foreground">
-              <span className="font-medium">"{keyword}"</span> 검색 결과{' '}
+              <span className="font-medium">&quot;{keyword}&quot;</span> 검색 결과{' '}
               {tourListResult.totalCount > 0 && (
                 <span className="font-semibold text-foreground">
                   {tourListResult.totalCount.toLocaleString()}개

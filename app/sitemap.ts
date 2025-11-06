@@ -111,7 +111,7 @@ function parseModifiedTime(modifiedtime: string): Date | null {
     }
 
     return new Date(year, month, day, hour, minute, second);
-  } catch (error) {
+  } catch {
     return null;
   }
 }

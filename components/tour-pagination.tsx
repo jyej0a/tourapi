@@ -87,8 +87,8 @@ export function TourPagination({
     // 모바일에서는 더 적은 페이지 표시 (클라이언트 사이드에서 감지 불가하므로 데스크톱 기준)
     const range = 2; // 현재 페이지 좌우로 표시할 페이지 수
 
-    let startPage = Math.max(1, currentPage - range);
-    let endPage = Math.min(totalPages, currentPage + range);
+    const startPage = Math.max(1, currentPage - range);
+    const endPage = Math.min(totalPages, currentPage + range);
 
     // 시작 페이지가 1이 아니면 1 추가
     if (startPage > 1) {

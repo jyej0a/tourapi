@@ -38,17 +38,19 @@ export default async function BookmarksPage() {
 
   return (
     <div className="min-h-[calc(100vh-80px)]">
-      <main className="max-w-7xl mx-auto px-4 py-8 lg:px-8 lg:py-16">
+      <main className="max-w-7xl mx-auto py-12 lg:py-20">
+        <div className="px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
         {/* 페이지 제목 */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">⭐ 내 북마크</h1>
-          <p className="text-muted-foreground">
+        <div className="mb-12">
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 tracking-tight">⭐ 내 북마크</h1>
+          <p className="text-muted-foreground text-lg">
             즐겨찾기한 관광지를 한눈에 확인하세요
           </p>
         </div>
 
         {/* 북마크 목록 컴포넌트 */}
         <BookmarkList />
+        </div>
       </main>
     </div>
   );

@@ -26,6 +26,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { CONTENT_TYPE } from '@/lib/types/tour';
 import type { TourItem } from '@/lib/types/tour';
@@ -48,10 +49,6 @@ function getContentTypeName(contentTypeId: string): string {
     return typeMap[contentTypeId] || '기타';
 }
 
-/**
- * 기본 이미지 URL (이미지가 없을 때 사용)
- */
-const DEFAULT_IMAGE = '/logo.png';
 
 interface TourCardProps {
     tour: TourItem;
@@ -62,44 +59,53 @@ interface TourCardProps {
 }
 
 export function TourCard({ tour, bookmarkDate }: TourCardProps) {
-    const imageUrl = tour.firstimage || tour.firstimage2 || DEFAULT_IMAGE;
+    const imageUrl = tour.firstimage || tour.firstimage2;
+    const hasImage = !!imageUrl;
+    const [imageError, setImageError] = useState(false);
     const contentTypeName = getContentTypeName(tour.contenttypeid);
     const address = tour.addr2 ? `${tour.addr1} ${tour.addr2}` : tour.addr1;
 
     return (
         <Link href={`/places/${tour.contentid}`} className="block h-full">
-            <Card className="h-full transition-all hover:shadow-lg hover:scale-[1.02] cursor-pointer overflow-hidden p-0">
+            <Card className="h-full transition-all hover:shadow-xl hover:scale-[1.02] cursor-pointer overflow-hidden p-0 border-0 shadow-md">
                 {/* 이미지 영역 */}
                 <div className="relative w-full h-56 overflow-hidden bg-muted">
-                    <Image
-                        src={imageUrl}
-                        alt={tour.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
+                    {hasImage && !imageError ? (
+                        <Image
+                            src={imageUrl}
+                            alt={tour.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            onError={() => setImageError(true)}
+                        />
+                    ) : (
+                        <div className="flex items-center justify-center h-full">
+                            <p className="text-muted-foreground text-sm">이미지 없음</p>
+                        </div>
+                    )}
                 </div>
 
-                <CardHeader className="pb-3 px-6 pt-4">
-                    {/* 관광 타입 뱃지 */}
-                    <div className="mb-2">
-                        <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary">
-                            {contentTypeName}
-                        </span>
-                    </div>
-
+                <CardHeader className="pb-4 px-6 pt-5">
                     {/* 관광지명 */}
-                    <h3 className="font-semibold text-lg line-clamp-2 leading-tight">
+                    <h3 className="font-semibold text-lg line-clamp-2 leading-tight mb-3">
                         {tour.title}
                     </h3>
-                </CardHeader>
 
-                <CardContent className="pt-0 px-6 pb-4">
                     {/* 주소 */}
-                    <p className="text-sm text-muted-foreground line-clamp-1 mb-2">
+                    <p className="text-sm text-muted-foreground line-clamp-1 mb-3">
                         📍 {address}
                     </p>
 
+                    {/* 관광 타입 뱃지 */}
+                    <div>
+                        <span className="inline-block px-3 py-1.5 text-xs font-medium rounded-full bg-primary/10 text-primary">
+                            {contentTypeName}
+                        </span>
+                    </div>
+                </CardHeader>
+
+                <CardContent className="pt-0 px-6 pb-5">
                     {/* 북마크 날짜 (선택 사항) */}
                     {bookmarkDate && (
                         <p className="text-xs text-muted-foreground">

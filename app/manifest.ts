@@ -20,11 +20,6 @@ import { MetadataRoute } from 'next';
  * @returns PWA manifest 설정
  */
 export default function manifest(): MetadataRoute.Manifest {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  process.env.NEXT_PUBLIC_VERCEL_URL 
-                    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-                    : 'https://example.com';
-
   return {
     name: 'My Trip - 전국 관광지 정보',
     short_name: 'My Trip',

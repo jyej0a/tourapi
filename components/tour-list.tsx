@@ -58,7 +58,7 @@ export function TourList({
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
         {Array.from({ length: 6 }).map((_, index) => (
           <TourCardSkeleton key={index} />
         ))}
@@ -73,7 +73,7 @@ export function TourList({
       return (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <p className="text-lg font-medium text-muted-foreground mb-2">
-            <span className="font-semibold">"{searchKeyword}"</span>에 대한 검색 결과가 없습니다
+            <span className="font-semibold">&quot;{searchKeyword}&quot;</span>에 대한 검색 결과가 없습니다
           </p>
           <p className="text-sm text-muted-foreground mb-4">
             다른 키워드로 검색하거나 필터를 변경해보세요.
@@ -97,7 +97,7 @@ export function TourList({
 
   // 목록 표시
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
       {tours.map((tour) => (
         <TourCard key={tour.contentid} tour={tour} />
       ))}

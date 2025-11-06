@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SaaS 템플릿",
+  title: "My Trip",
   description: "Next.js + Clerk + Supabase 보일러플레이트",
 };
 

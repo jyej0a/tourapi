@@ -16,6 +16,37 @@ import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 /**
+ * .env 파일을 읽어서 process.env에 로드
+ * 
+ * tsx로 직접 실행할 때는 .env 파일이 자동으로 로드되지 않으므로
+ * 수동으로 로드해야 합니다.
+ */
+function loadEnvFile(): void {
+  const envPath = join(process.cwd(), '.env');
+  
+  if (!existsSync(envPath)) {
+    return;
+  }
+
+  const envContent = readFileSync(envPath, 'utf-8');
+  
+  envContent.split('\n').forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const [key, ...valueParts] = trimmed.split('=');
+      if (key) {
+        const envKey = key.trim();
+        const envValue = valueParts.join('=').trim();
+        // 이미 process.env에 있으면 덮어쓰지 않음 (시스템 환경변수 우선)
+        if (!process.env[envKey]) {
+          process.env[envKey] = envValue;
+        }
+      }
+    }
+  });
+}
+
+/**
  * .env 파일 읽기 (참고용)
  */
 function readEnvFile(): Record<string, string> {
@@ -45,6 +76,9 @@ function readEnvFile(): Record<string, string> {
  * 메인 함수
  */
 function main() {
+  // .env 파일을 process.env에 로드 (검증 전에 먼저 로드)
+  loadEnvFile();
+  
   const args = process.argv.slice(2);
   const strict = args.includes('--strict') || args.includes('-s');
   const checkOnly = args.includes('--check') || args.includes('-c');

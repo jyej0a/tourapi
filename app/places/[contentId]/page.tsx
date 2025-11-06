@@ -190,7 +190,7 @@ export default async function PlaceDetailPage({ params }: PageProps) {
     <div className="min-h-[calc(100vh-80px)]">
       {/* 헤더 영역 - 뒤로가기 버튼 */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
           <Link href="/">
             <Button variant="ghost" size="icon" className="gap-2">
               <ArrowLeft className="h-5 w-5" />
@@ -201,7 +201,8 @@ export default async function PlaceDetailPage({ params }: PageProps) {
       </header>
 
       {/* 메인 콘텐츠 */}
-      <main className="max-w-7xl mx-auto px-4 py-8 lg:px-8 lg:py-16">
+      <main className="max-w-7xl mx-auto py-12 lg:py-20">
+        <div className="px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
         {/* 공유 및 북마크 버튼 (헤더 영역) */}
         <div className="mb-6 flex justify-end gap-2">
           <BookmarkButton contentId={contentId} />
@@ -239,6 +240,7 @@ export default async function PlaceDetailPage({ params }: PageProps) {
             />
           </section>
         )}
+        </div>
       </main>
     </div>
   );
