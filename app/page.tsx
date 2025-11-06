@@ -42,6 +42,68 @@ interface HomeProps {
 }
 
 /**
+ * 한국관광공사 API의 modifiedtime 형식을 Date로 변환
+ * 형식: "YYYYMMDDHHmmss" (예: "20240101120000")
+ * @param modifiedtime 수정일 문자열
+ * @returns Date 객체 또는 null
+ */
+function parseModifiedTime(modifiedtime: string): Date | null {
+  if (!modifiedtime || modifiedtime.trim() === '') {
+    return null;
+  }
+
+  // "YYYYMMDDHHmmss" 형식 파싱
+  // 예: "20240101120000" -> 2024-01-01 12:00:00
+  if (modifiedtime.length === 14) {
+    const year = parseInt(modifiedtime.substring(0, 4), 10);
+    const month = parseInt(modifiedtime.substring(4, 6), 10) - 1; // 월은 0부터 시작
+    const day = parseInt(modifiedtime.substring(6, 8), 10);
+    const hour = parseInt(modifiedtime.substring(8, 10), 10);
+    const minute = parseInt(modifiedtime.substring(10, 12), 10);
+    const second = parseInt(modifiedtime.substring(12, 14), 10);
+
+    // 유효성 검사
+    if (
+      isNaN(year) ||
+      isNaN(month) ||
+      isNaN(day) ||
+      isNaN(hour) ||
+      isNaN(minute) ||
+      isNaN(second)
+    ) {
+      return null;
+    }
+
+    try {
+      const date = new Date(year, month, day, hour, minute, second);
+      // 유효한 날짜인지 확인
+      if (
+        date.getFullYear() === year &&
+        date.getMonth() === month &&
+        date.getDate() === day
+      ) {
+        return date;
+      }
+    } catch (error) {
+      // 파싱 실패
+      return null;
+    }
+  }
+
+  // 일반 Date 형식으로 시도
+  try {
+    const date = new Date(modifiedtime);
+    if (!isNaN(date.getTime())) {
+      return date;
+    }
+  } catch (error) {
+    // 파싱 실패
+  }
+
+  return null;
+}
+
+/**
  * 관광지 정렬 함수
  * @param tours 정렬할 관광지 배열
  * @param sortBy 정렬 방식 ('latest' | 'name')
@@ -54,37 +116,20 @@ function sortTours(tours: TourItem[], sortBy: string): TourItem[] {
   // 최신순: modifiedtime 내림차순
   if (sortBy === 'latest') {
     return [...tours].sort((a, b) => {
-      // modifiedtime이 없거나 유효하지 않은 경우 처리
-      if (!a.modifiedtime || !b.modifiedtime) {
-        // 둘 다 없으면 순서 유지
-        if (!a.modifiedtime && !b.modifiedtime) return 0;
-        // a만 없으면 뒤로
-        if (!a.modifiedtime) return 1;
-        // b만 없으면 앞으로
-        return -1;
-      }
+      const dateA = parseModifiedTime(a.modifiedtime);
+      const dateB = parseModifiedTime(b.modifiedtime);
 
-      try {
-        const timeA = new Date(a.modifiedtime).getTime();
-        const timeB = new Date(b.modifiedtime).getTime();
-        
-        // 유효하지 않은 날짜 처리
-        if (isNaN(timeA) || isNaN(timeB)) {
-          // 둘 다 유효하지 않으면 순서 유지
-          if (isNaN(timeA) && isNaN(timeB)) return 0;
-          // a만 유효하지 않으면 뒤로
-          if (isNaN(timeA)) return 1;
-          // b만 유효하지 않으면 앞으로
-          return -1;
-        }
+      // 둘 다 날짜가 없으면 순서 유지
+      if (!dateA && !dateB) return 0;
+      // a만 날짜가 없으면 뒤로
+      if (!dateA) return 1;
+      // b만 날짜가 없으면 앞으로
+      if (!dateB) return -1;
 
-        // 내림차순 정렬 (최신순)
-        return timeB - timeA;
-      } catch (error) {
-        // 날짜 파싱 에러 발생 시 원래 순서 유지
-        console.warn('날짜 파싱 에러:', error);
-        return 0;
-      }
+      // 내림차순 정렬 (최신순: 큰 값이 앞으로)
+      const timeA = dateA.getTime();
+      const timeB = dateB.getTime();
+      return timeB - timeA;
     });
   }
 
@@ -96,7 +141,7 @@ function sortTours(tours: TourItem[], sortBy: string): TourItem[] {
       if (!a.title) return 1;
       if (!b.title) return -1;
 
-      // 한글 가나다순 정렬
+      // 한글 가나다순 정렬 (오름차순)
       return a.title.localeCompare(b.title, 'ko', { sensitivity: 'base' });
     });
   }
@@ -147,16 +192,19 @@ async function getTourList(
     // 정렬 적용
     const sortedTours = sortTours(result.items || [], sortBy);
 
-    // 개발 환경에서 정렬 확인 로그 (실제 배포 시 제거 가능)
+    // 개발 환경에서 정렬 확인 로그
     if (process.env.NODE_ENV === 'development' && sortedTours.length > 0) {
       console.group(`[정렬 확인] ${sortBy === 'latest' ? '최신순' : '이름순'}`);
+      console.log('정렬 방식:', sortBy);
       console.log('정렬 전 첫 3개:', result.items?.slice(0, 3).map((t) => ({
         title: t.title.substring(0, 20),
         modifiedtime: t.modifiedtime,
+        parsedDate: parseModifiedTime(t.modifiedtime)?.toISOString() || '파싱 실패',
       })));
       console.log('정렬 후 첫 3개:', sortedTours.slice(0, 3).map((t) => ({
         title: t.title.substring(0, 20),
         modifiedtime: t.modifiedtime,
+        parsedDate: parseModifiedTime(t.modifiedtime)?.toISOString() || '파싱 실패',
       })));
       console.groupEnd();
     }

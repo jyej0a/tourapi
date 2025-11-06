@@ -145,15 +145,15 @@
 - [x] `.cursor/` 디렉토리 (완료)
   - [x] `rules/` 커서룰 (완료)
   - [x] `mcp.json` MCP 서버 설정 (완료)
-  - [ ] `dir.md` 프로젝트 디렉토리 구조
+  - [x] `dir.md` 프로젝트 디렉토리 구조 (완료)
 - [x] `.github/` 디렉토리 (완료)
-- [ ] `.husky/` 디렉토리
-- [ ] `app/` 디렉토리
+- [ ] `.husky/` 디렉토리 (선택 사항 - Git hooks 설정)
+- [x] `app/` 디렉토리 (완료)
   - [x] `favicon.ico` 파일 (완료)
-  - [ ] `not-found.tsx` 파일
-  - [ ] `robots.ts` 파일
-  - [ ] `sitemap.ts` 파일
-  - [ ] `manifest.ts` 파일
+  - [x] `not-found.tsx` 파일 (완료)
+  - [x] `robots.ts` 파일 (완료)
+  - [x] `sitemap.ts` 파일 (완료)
+  - [x] `manifest.ts` 파일 (완료)
 - [x] `supabase/` 디렉토리 (완료)
   - [x] `migrations/mytrip_schema.sql` (완료)
 - [x] `public/` 디렉토리 (완료)
